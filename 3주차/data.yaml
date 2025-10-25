@@ -1,0 +1,14 @@
+# 데이터셋 정보 설정 (Dataset information settings)
+train: ./datasets/train/images # 학습 데이터 경로 (Training data path)
+val: ./datasets/valid/images # 검증 데이터 경로 (Validation data path)
+test: ./datasets/test/images # 테스트 데이터 경로 (선택 사항) (Test data path (optional))
+
+# 클래스 개수 설정 (Set number of classes)
+nc: 3 # 클래스 개수 (예: 3개 클래스) (Number of classes (e.g., 3 classes))
+
+# 클래스 이름 정의 (Define class names)
+names: ['person', 'car', 'dog']
+
+# 주의사항: 각 이미지에 대해 라벨 파일(.txt)이 필요합니다
+# 예: dataset1.jpg -> dataset1.txt
+# 라벨 파일 형식: class_id x_center y_center width height (정규화된 좌표)
