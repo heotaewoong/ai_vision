@@ -19,3 +19,71 @@
 - 로컬 실행: `python image_preprocessing.py --input-dir dataset --output-dir preprocessed --save-samples submission/samples`
 - 코드 문서화: `submission/README.md` 참조
 - (선택) HF 스트리밍 버전은 `image_preprocessing.py`에 있으나, `datasets`/`torch` 의존성으로 인해 별도 설치 필요
+
+슬라이드 5: Git 저장소 구성 및 실습
+
+- 원격 저장소: `https://github.com/heotaewoong/ai_vision.git`
+- 로컬 경로: `C:\coding\vision\ai_vision`
+
+초기 설정
+
+```bash
+cd C:\coding\vision\ai_vision
+git init
+git branch -m main
+git remote add origin https://github.com/heotaewoong/ai_vision.git
+git status
+```
+
+초기 커밋 및 푸시
+
+```bash
+git add .
+git commit -m "chore: initialize project"
+git push -u origin main
+```
+
+기능 브랜치 생성/작업/푸시
+
+```bash
+git checkout -b feature/image-processing
+# (코드 수정)
+git add -A
+git commit -m "feat: add image preprocessing pipeline"
+git push -u origin feature/image-processing
+```
+
+기존 저장소에 원격만 연결/변경할 때
+
+```bash
+git remote -v
+git remote set-url origin https://github.com/heotaewoong/ai_vision.git
+```
+
+권장 .gitignore (요약)
+
+```gitignore
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Data & results
+1주차/dataset/
+3주차/results/
+
+# OS/editor
+.DS_Store
+*.code-workspace
+.idea/
+.vscode/
+```
+
+(선택) 큰 이미지/모델 파일은 Git LFS 사용
+
+```bash
+git lfs install
+git lfs track "*.jpg" "*.png" "*.pt"
+git add .gitattributes
+```
