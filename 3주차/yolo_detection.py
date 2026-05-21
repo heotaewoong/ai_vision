@@ -24,6 +24,30 @@ import urllib.request
 import json
 from datetime import datetime
 
+# macOS 한글 폰트 설정 (경고 방지)
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+def _setup_korean_font():
+    """macOS에서 한글 폰트 자동 설정"""
+    candidates = [
+        "/System/Library/Fonts/AppleSDGothicNeo.ttc",
+        "/Library/Fonts/NanumGothic.ttf",
+        "/System/Library/Fonts/Supplemental/AppleGothic.ttf",
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            fm.fontManager.addfont(path)
+            prop = fm.FontProperties(fname=path)
+            matplotlib.rc("font", family=prop.get_name())
+            matplotlib.rcParams["axes.unicode_minus"] = False
+            return
+    matplotlib.rc("font", family="DejaVu Sans")
+
+_setup_korean_font()
+
 
 # ─────────────────────────────────────────────
 # 1. 모델 로드 (YOLOv8 또는 대체 방법)
@@ -209,10 +233,6 @@ def draw_confidence_chart(detections: list, output_path: str):
         return
 
     try:
-        import matplotlib.pyplot as plt
-        import matplotlib
-        matplotlib.use("Agg")
-
         labels = [f"{d['label']}\n({d['confidence']:.0%})" for d in detections]
         confs = [d["confidence"] for d in detections]
         colors_mpl = ["#2ecc71" if c >= 0.8 else "#f39c12" if c >= 0.6 else "#e74c3c" for c in confs]
@@ -237,6 +257,8 @@ def draw_confidence_chart(detections: list, output_path: str):
 
     except ImportError:
         print("  ⚠️  matplotlib 미설치 → pip install matplotlib")
+    except Exception as e:
+        print(f"  ⚠️  차트 생성 오류: {e}")
 
 
 # ─────────────────────────────────────────────
@@ -254,9 +276,6 @@ def plot_mock_training_curves(output_path: str):
     AI도 학습 횟수(Epoch)가 늘수록 정확도(mAP)가 향상됩니다.
     """
     try:
-        import matplotlib.pyplot as plt
-        import matplotlib
-        matplotlib.use("Agg")
 
         epochs = np.arange(1, 21)
         # 시뮬레이션: 로그 형태로 수렴하는 학습 곡선
